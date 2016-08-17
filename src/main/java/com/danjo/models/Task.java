@@ -1,8 +1,11 @@
 package com.danjo.models;
 
 
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
+@Table(name = "tasks")
 public class Task {
 
     private int id;
@@ -16,8 +19,11 @@ public class Task {
     public Task() {
         this.createdAt = new Date();
         this.updatedAt = new Date();
+        this.isComplete = false;
     }
 
+    @Id
+    @GeneratedValue
     public int getId() {return id;}
     public void setId(int id) {this.id = id;}
 
@@ -27,17 +33,24 @@ public class Task {
     public String getCategory() {return category;}
     public void setCategory(String category) {this.category = category;}
 
+    @Temporal(TemporalType.DATE)
     public Date getDue() {return due;}
     public void setDue(Date due) {this.due = due;}
 
+    @Column(name = "is_complete", columnDefinition = "BIT", length = 1)
     public Boolean getIsComplete() {return isComplete;}
     public void setIsComplete(Boolean complete) {isComplete = complete;}
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_at", insertable = true, updatable = false)
     public Date getCreatedAt() { return createdAt; }
     public void setCreatedAt(Date createdAt) { this.createdAt = createdAt; }
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updated_at")
     public Date getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(Date updatedAt) { this.updatedAt = updatedAt; }
 
+    @PreUpdate
     protected void updateTime() { this.updatedAt = new Date(); }
 }
